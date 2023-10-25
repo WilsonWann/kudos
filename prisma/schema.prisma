@@ -1,3 +1,4 @@
+// ./prisma/schema.prisma
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
@@ -10,11 +11,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ./prisma/schema.prisma
 model User {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   email     String   @unique
   password  String
+  profile   Profile // 👈
+}
+
+type Profile {
+  firstName String
+  lastName  String
 }
