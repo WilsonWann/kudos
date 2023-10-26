@@ -8,7 +8,7 @@ import {
 } from '@remix-run/node'
 import { useLoaderData, useActionData } from '@remix-run/react'
 import { getUserById } from '~/utils/user.server'
-import { getUser } from '~/utils/auth.server'
+import { getUser, requireUserId } from '~/utils/auth.server'
 import { UserCircle } from '~/components/user-circle'
 import { useState } from 'react'
 import type { Color, Emoji, KudoStyle } from '@prisma/client'
@@ -16,7 +16,6 @@ import { Modal } from '~/components/modal'
 import { SelectBox } from '~/components/select-box'
 import { colorMap, emojiMap } from '~/utils/constants'
 import { Kudo } from '~/components/kudo'
-import { requireUserId } from '~/utils/auth.server'
 import { createKudo } from '~/utils/kudo.server'
 
 export const loader: LoaderFunction = async ({ request, params }) => {

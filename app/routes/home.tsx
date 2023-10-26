@@ -1,7 +1,7 @@
 // app/routes/home.tsx
 
 import { type LoaderFunction, json } from '@remix-run/node'
-import { requireUserId } from '~/utils/auth.server'
+import { requireUserId, getUser } from '~/utils/auth.server'
 import { Layout } from '~/components/layout'
 import { UserPanel } from '~/components/user-panel'
 import { getOtherUsers } from '~/utils/user.server'
@@ -46,41 +46,47 @@ export const loader: LoaderFunction = async ({ request }) => {
   if (filter) {
     textFilter = {
       OR: [
-        { message: { mode: 'insensitive', contains: filter } },
+        {
+          message: {
+            mode: 'insensitive',
+            contains: filter
+          }
+        },
         {
           author: {
             OR: [
               {
                 profile: {
-                  is: { firstName: { mode: 'insensitive', contains: filter } },
-                },
+                  is: { firstName: { mode: 'insensitive', contains: filter } }
+                }
               },
               {
                 profile: {
-                  is: { lastName: { mode: 'insensitive', contains: filter } },
-                },
-              },
-            ],
-          },
-        },
-      ],
+                  is: { lastName: { mode: 'insensitive', contains: filter } }
+                }
+              }
+            ]
+          }
+        }
+      ]
     }
   }
 
   const kudos = await getFilteredKudos(userId, sortOptions, textFilter)
   const recentKudos = await getRecentKudos()
-  return json({ users, kudos, recentKudos })
+  const user = await getUser(request)
+  return json({ users, kudos, recentKudos, user })
 }
 
 export default function Home() {
-  const { users, kudos, recentKudos } = useLoaderData()
+  const { users, kudos, recentKudos, user } = useLoaderData()
   return (
     <Layout>
       <Outlet />
       <div className='h-full flex'>
         <UserPanel users={users} />
         <div className='flex-1 flex flex-col'>
-          <SearchBar />
+          <SearchBar profile={user.profile} />
           <div className='flex-1 flex'>
             <div className='w-full p-10 flex flex-col gap-y-4'>
               {kudos.map((kudo: KudoWithProfile) => (
