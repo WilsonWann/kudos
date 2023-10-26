@@ -3,7 +3,6 @@ node_modules
 /.cache
 /build
 /public/build
-.env
 
 # Logs
 logs
@@ -80,7 +79,6 @@ web_modules/
 .yarn-integrity
 
 # dotenv environment variable files
-.env
 .env.development.local
 .env.test.local
 .env.production.local
