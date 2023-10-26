@@ -15,10 +15,10 @@ export function RecentBar({ kudos }: { kudos: KudoWithRecipient[] }) {
         Recent Kudos
       </h2>
       <div className='h-full flex flex-col gap-y-10 mt-10'>
-        {kudos.map((kudo) => (
+        {kudos.map((kudo, index) => (
           <div
             className='h-24 w-24 relative'
-            key={kudo.recipient.id}
+            key={`${kudo.recipient.id}_${index}`}
           >
             <UserCircle
               profile={kudo.recipient.profile}
