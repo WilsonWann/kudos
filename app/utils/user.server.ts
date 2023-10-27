@@ -52,3 +52,7 @@ export const getUserById = async (userId: string) => {
         },
     })
 }
+
+export const deleteUser = async (id: string) => {
+    await prisma.user.delete({ where: { id } });
+}
